@@ -1,5 +1,7 @@
 package com.codecool.krk.model;
 
+import com.codecool.krk.enums.ECategory;
+
 import java.util.List;
 
 public class Movie {

@@ -1,5 +1,8 @@
 package com.codecool.krk.model;
 
+
+import com.codecool.krk.enums.ESex;
+
 public class Pornstar {
     private long id;
     private String firstName;
