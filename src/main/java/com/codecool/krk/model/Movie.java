@@ -13,6 +13,7 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String title;
     private float duration;
 
     @ElementCollection
@@ -23,15 +24,33 @@ public class Movie {
     @Enumerated
     private List<ECategory> categories;
 
+    public Movie() {}
 
-    public Movie(List<Pornstar> pornstars, List<ECategory> categories, float duration) {
+    public Movie(String title, float duration, List<Pornstar> pornstars, List<ECategory> categories) {
+        this.title = title;
+        this.duration = duration;
         this.pornstars = pornstars;
         this.categories = categories;
-        this.duration = duration;
     }
 
     public long getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public float getDuration() {
+        return duration;
+    }
+
+    public void setDuration(float duration) {
+        this.duration = duration;
     }
 
     public List<Pornstar> getPornstars() {
@@ -48,14 +67,6 @@ public class Movie {
 
     public void setCategories(List<ECategory> categories) {
         this.categories = categories;
-    }
-
-    public float getDuration() {
-        return duration;
-    }
-
-    public void setDuration(float duration) {
-        this.duration = duration;
     }
 
     public String toJson() {
