@@ -9,29 +9,25 @@
         <servlet-name>MovieServlet</servlet-name>
         <servlet-class>com.codecool.krk.servlets.MovieServlet</servlet-class>
     </servlet>
-    <!--<servlet>-->
-        <!--<servlet-name>PornstarServlet</servlet-name>-->
-        <!--<servlet-class>com.codecool.krk.servlets.PornstarServlet</servlet-class>-->
-    <!--</servlet>-->
-    <!--<servlet>-->
-        <!--<servlet-name>UserServlet</servlet-name>-->
-        <!--<servlet-class>com.codecool.krk.servlets.UserServlet</servlet-class>-->
-    <!--</servlet>-->
+    <servlet>
+        <servlet-name>PornstarServlet</servlet-name>
+        <servlet-class>com.codecool.krk.servlets.PornstarServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>com.codecool.krk.servlets.UserServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>MovieServlet</servlet-name>
-        <url-pattern>/movie/*</url-pattern>
+        <url-pattern>/ms</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>MovieServlet</servlet-name>
-        <url-pattern>/movie</url-pattern>
+        <servlet-name>PornstarServlet</servlet-name>
+        <url-pattern>/pn</url-pattern>
     </servlet-mapping>
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>PornstarServlet</servlet-name>-->
-        <!--<url-pattern>/pn</url-pattern>-->
-    <!--</servlet-mapping>-->
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>UserServlet</servlet-name>-->
-        <!--<url-pattern>/us</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/us</url-pattern>
+    </servlet-mapping>
 </web-app>
