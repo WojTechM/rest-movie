@@ -1,16 +1,39 @@
 package com.codecool.krk.model;
 
+import com.google.gson.Gson;
+
+import javax.persistence.*;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String login;
     private String password;
-    private Map<Movie, Integer> ratings;
+
+    @ElementCollection
+    @OneToMany
+    private List<View> views;
+
+    @Transient
+    private Map<Movie, Long> ratings = new HashMap<>();
 
     public User(String login, String password) {
         this.login = login;
         this.password = password;
+        this.setRatings();
+    }
+
+    public User(String login, String password, List<View> views) {
+        this.login = login;
+        this.password = password;
+        this.views = views;
+        this.setRatings();
     }
 
     public long getId() {
@@ -33,19 +56,26 @@ public class User {
         this.password = password;
     }
 
-    public Map<Movie, Integer> getRatings() {
-        return this.ratings;
+    public List<View> getViews() {
+        return this.views;
     }
 
-    public void setRatings(Map<Movie, Integer> ratings) {
-        this.ratings = ratings;
+    public void setViews(List<View> views) {
+        this.views = views;
     }
 
-    public void addRating(Movie movie, Integer rating) {
-        this.ratings.put(movie, rating);
-    }
-
-    public int getRating(Movie movie) {
+    public long getRating(Movie movie) {
         return this.ratings.get(movie);
+    }
+
+    private void setRatings() {
+        for (View view : this.views) {
+            this.ratings.put(view.getMovie(), view.getRating());
+        }
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

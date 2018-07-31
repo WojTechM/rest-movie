@@ -2,6 +2,7 @@ package com.codecool.krk.model;
 
 
 import com.codecool.krk.enums.ESex;
+import com.google.gson.Gson;
 
 import javax.persistence.*;
 
@@ -90,5 +91,10 @@ public class Pornstar {
 
     public void setSex(ESex sex) {
         this.sex = sex;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }
