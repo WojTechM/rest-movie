@@ -3,14 +3,23 @@ package com.codecool.krk.model;
 
 import com.codecool.krk.enums.ESex;
 
+import javax.persistence.*;
+
+@Entity
 public class Pornstar {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String firstName;
     private String lastName;
     private String nickName;
     private long age;
     private long weight;
     private long height;
+
+    @Enumerated
     private ESex sex;
 
     public Pornstar(String firstName, String lastName, String nickName, long age, long weight, long height, ESex sex) {

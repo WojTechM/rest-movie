@@ -15,9 +15,11 @@ public class Movie {
 
     private float duration;
 
+    @ElementCollection
     @ManyToMany
     private List<Pornstar> pornstars;
 
+    @ElementCollection
     @Enumerated
     private List<ECategory> categories;
 
