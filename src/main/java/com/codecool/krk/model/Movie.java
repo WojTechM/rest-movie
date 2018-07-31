@@ -1,15 +1,27 @@
 package com.codecool.krk.model;
 
 import com.codecool.krk.enums.ECategory;
+import com.google.gson.Gson;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Movie {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private List<Pornstar> pornstars;
-    private List<ECategory> categories;
+
     private float duration;
+
+    @ElementCollection
+    @ManyToMany
+    private List<Pornstar> pornstars;
+
+    @ElementCollection
+    @Enumerated
+    private List<ECategory> categories;
 
 
     public Movie(List<Pornstar> pornstars, List<ECategory> categories, float duration) {
@@ -44,5 +56,10 @@ public class Movie {
 
     public void setDuration(float duration) {
         this.duration = duration;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }
