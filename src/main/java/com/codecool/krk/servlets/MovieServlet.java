@@ -3,7 +3,8 @@ package com.codecool.krk.servlets;
 import com.codecool.krk.enums.ECategory;
 import com.codecool.krk.enums.ESex;
 import com.codecool.krk.helpers.EntityManagerSingleton;
-import com.codecool.krk.helpers.Repository;
+import com.codecool.krk.repositories.MovieRepository;
+import com.codecool.krk.repositories.Repository;
 import com.codecool.krk.helpers.URIparser;
 import com.codecool.krk.model.Movie;
 import com.codecool.krk.model.Pornstar;
@@ -19,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieServlet extends HttpServlet {
+    private Repository<Movie> movieRepository = new MovieRepository();
 
-    private Repository<Movie> movieRepository = new Repository<>(Movie.class);
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         populateDb();
@@ -32,6 +33,40 @@ public class MovieServlet extends HttpServlet {
             sendSingleJson(response, id);
         } else {
             sendAll(response);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        String title = getTitleFromRequest(request);
+        float duration = getDurationFromRequest(request);
+        List<ECategory> categories = getCategoriesFromRequest(request);
+        List<Pornstar> pornstars = getPornstarsFromRequest(request);
+
+        Movie movie = new Movie(title, duration, pornstars, categories, "https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg");
+
+        movieRepository.add(movie);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            Movie movie = updateMovie(request, id);
+            movieRepository.update(movie);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            Movie movie = movieRepository.get(id);
+            movieRepository.delete(movie);
         }
     }
 
@@ -48,16 +83,6 @@ public class MovieServlet extends HttpServlet {
         response.getWriter().write(json);
     }
 
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
-        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
-
-        if (uriHasIdentifier) {
-            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
-            Movie movie = updateMovie(request, id);
-            movieRepository.persistEntity(movie);
-        }
-    }
-
     private Movie updateMovie(HttpServletRequest request, long id) {
         Movie movie = movieRepository.get(id);
 
@@ -67,27 +92,6 @@ public class MovieServlet extends HttpServlet {
         movie.setPornstars(getPornstarsFromRequest(request));
 
         return movie;
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        String title = getTitleFromRequest(request);
-        float duration = getDurationFromRequest(request);
-        List<ECategory> categories = getCategoriesFromRequest(request);
-        List<Pornstar> pornstars = getPornstarsFromRequest(request);
-
-        Movie movie = new Movie(title, duration, pornstars, categories, "https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg");
-
-        movieRepository.persistEntity(movie);
-    }
-
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
-        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
-
-        if (uriHasIdentifier) {
-            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
-            Movie movie = movieRepository.get(id);
-            movieRepository.delete(movie);
-        }
     }
 
     private String getTitleFromRequest(HttpServletRequest request) {

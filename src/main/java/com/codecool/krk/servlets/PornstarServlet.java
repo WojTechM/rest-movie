@@ -4,7 +4,7 @@ import com.codecool.krk.enums.ESex;
 import com.codecool.krk.helpers.EntityManagerSingleton;
 import com.codecool.krk.helpers.URIparser;
 import com.codecool.krk.model.Pornstar;
-import com.codecool.krk.helpers.Repository;
+import com.codecool.krk.repositories.Repository;
 import com.google.gson.Gson;
 
 import javax.persistence.*;
@@ -38,7 +38,7 @@ public class PornstarServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Pornstar pornstar = new Pornstar();
         setData(request, pornstar);
-        pornstarRepository.persistEntity(pornstar);
+        pornstarRepository.add(pornstar);
     }
 
     @Override
@@ -49,7 +49,18 @@ public class PornstarServlet extends HttpServlet {
             long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
             Pornstar updatedPornstar = pornstarRepository.get(id);
             setData(request, updatedPornstar);
-            pornstarRepository.persistEntity(updatedPornstar);
+            pornstarRepository.update(updatedPornstar);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            Pornstar pornstar = pornstarRepository.get(id);
+            pornstarRepository.delete(pornstar);
         }
     }
 

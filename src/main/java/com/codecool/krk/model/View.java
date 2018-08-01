@@ -11,23 +11,24 @@ public class View {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    private Movie movie;
+    private long movieId;
     private long rating;
 
-    public View() {}
+    public View() {
 
-    public View(Movie movie, long rating) {
-        this.movie = movie;
+    }
+
+    public View(long movieId, long rating) {
+        this.movieId = movieId;
         this.rating = rating;
     }
 
-    public Movie getMovie() {
-        return this.movie;
+    public long getMovieId() {
+        return this.movieId;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setMovieId(long movieId) {
+        this.movieId = movieId;
     }
 
     public long getRating() {

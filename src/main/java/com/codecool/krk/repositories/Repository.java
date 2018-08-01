@@ -1,4 +1,6 @@
-package com.codecool.krk.helpers;
+package com.codecool.krk.repositories;
+
+import com.codecool.krk.helpers.EntityManagerSingleton;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -9,17 +11,24 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class Repository <E> {
-    private EntityManager em = EntityManagerSingleton.getInstance();
+    protected EntityManager em = EntityManagerSingleton.getInstance();
     private Class ofClass;
 
     public Repository(Class ofClass) {
         this.ofClass = ofClass;
     }
 
-    public void persistEntity(E entity) {
+    public void add(E entity) {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         em.persist(entity);
+        transaction.commit();
+    }
+
+    public void update(E entity) {
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.merge(entity);
         transaction.commit();
     }
 
