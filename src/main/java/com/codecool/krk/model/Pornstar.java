@@ -23,6 +23,10 @@ public class Pornstar {
     @Enumerated
     private ESex sex;
 
+    public Pornstar() {
+
+    }
+
     public Pornstar(String firstName, String lastName, String nickName, long age, long weight, long height, ESex sex) {
         this.firstName = firstName;
         this.lastName = lastName;
