@@ -28,10 +28,18 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PornstarServlet</servlet-name>
-        <url-pattern>/pn</url-pattern>
+        <url-pattern>/pornstar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PornstarServlet</servlet-name>
+        <url-pattern>/pornstar/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/us</url-pattern>
+        <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/user/*</url-pattern>
     </servlet-mapping>
 </web-app>
