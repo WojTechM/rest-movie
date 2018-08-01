@@ -19,6 +19,7 @@ import java.util.List;
 public class PornstarServlet extends HttpServlet {
     private Repository<Pornstar> pornstarRepository = new Repository<>(Pornstar.class);
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = EntityManagerSingleton.getInstance();
         populateDb(em);
@@ -33,12 +34,21 @@ public class PornstarServlet extends HttpServlet {
         }
     }
 
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Pornstar pornstar = new Pornstar();
+        setData(request, pornstar);
+        pornstarRepository.persistEntity(pornstar);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
 
         if (uriHasIdentifier) {
             long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
-            Pornstar updatedPornstar = getUpdate(request, id);
+            Pornstar updatedPornstar = pornstarRepository.get(id);
+            setData(request, updatedPornstar);
             pornstarRepository.persistEntity(updatedPornstar);
         }
     }
@@ -57,25 +67,24 @@ public class PornstarServlet extends HttpServlet {
         response.getWriter().write(json);
     }
 
-    private Pornstar getUpdate(HttpServletRequest request, long id) {
+    private Pornstar setData(HttpServletRequest request, Pornstar pornstar) {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String nickName = request.getParameter("nickName");
         long age = Long.parseLong(request.getParameter("age"));
         long weight = Long.parseLong(request.getParameter("weight"));
         long height = Long.parseLong(request.getParameter("height"));
-        ESex sex = ESex.valueOf(request.getParameter("sex"));
+        ESex sex = ESex.valueOf(request.getParameter("sex").toUpperCase());
 
-        Pornstar updatedPornstar = pornstarRepository.get(id);
-        updatedPornstar.setFirstName(firstName);
-        updatedPornstar.setLastName(lastName);
-        updatedPornstar.setNickName(nickName);
-        updatedPornstar.setAge(age);
-        updatedPornstar.setWeight(weight);
-        updatedPornstar.setHeight(height);
-        updatedPornstar.setSex(sex);
+        pornstar.setFirstName(firstName);
+        pornstar.setLastName(lastName);
+        pornstar.setNickName(nickName);
+        pornstar.setAge(age);
+        pornstar.setWeight(weight);
+        pornstar.setHeight(height);
+        pornstar.setSex(sex);
 
-        return updatedPornstar;
+        return pornstar;
     }
 
     private void populateDb(EntityManager em) {
