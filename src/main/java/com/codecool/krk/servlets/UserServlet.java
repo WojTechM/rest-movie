@@ -53,6 +53,20 @@ public class UserServlet extends HttpServlet {
         userRepository.add(user);
     }
 
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            User updatedUser = userRepository.get(id);
+            List<View> views = getViews(request);
+            setData(request, updatedUser, views);
+
+            userRepository.update(updatedUser);
+        }
+    }
+
     private void sendSingleJson(HttpServletResponse response, EntityManager em, long id) throws IOException {
         String userJson = userRepository.get(id).toJson();
         response.getWriter().write(userJson);
