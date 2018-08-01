@@ -23,6 +23,8 @@ public class User {
     @Transient
     private Map<Movie, Long> ratings = new HashMap<>();
 
+    public User() {}
+
     public User(String login, String password) {
         this.login = login;
         this.password = password;

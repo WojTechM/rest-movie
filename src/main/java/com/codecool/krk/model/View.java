@@ -11,9 +11,11 @@ public class View {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Movie movie;
     private long rating;
+
+    public View() {}
 
     public View(Movie movie, long rating) {
         this.movie = movie;
