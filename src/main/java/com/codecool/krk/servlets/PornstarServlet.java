@@ -1,18 +1,13 @@
 package com.codecool.krk.servlets;
 
-import com.codecool.krk.enums.ECategory;
 import com.codecool.krk.enums.ESex;
 import com.codecool.krk.helpers.EntityManagerSingleton;
-import com.codecool.krk.helpers.SelectQueryBuilder;
 import com.codecool.krk.helpers.URIparser;
-import com.codecool.krk.model.Movie;
 import com.codecool.krk.model.Pornstar;
+import com.codecool.krk.helpers.Repository;
 import com.google.gson.Gson;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PornstarServlet extends HttpServlet {
+    private Repository<Pornstar> pornstarRepository = new Repository<>(Pornstar.class);
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em = EntityManagerSingleton.getInstance();
         populateDb(em);
@@ -35,19 +32,50 @@ public class PornstarServlet extends HttpServlet {
             sendAll(response, em);
         }
     }
+
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            Pornstar updatedPornstar = getUpdate(request, id);
+            pornstarRepository.persistEntity(updatedPornstar);
+        }
+    }
+
     private void sendSingleJson(HttpServletResponse response, EntityManager em, long id) throws IOException {
-        String pornstarJson = em.find(Pornstar.class, id).toJson();
+        String pornstarJson = pornstarRepository.get(id).toJson();
         response.getWriter().write(pornstarJson);
     }
 
     private void sendAll(HttpServletResponse response, EntityManager em) throws IOException{
-        SelectQueryBuilder<Pornstar> selectQueryBuilder = new SelectQueryBuilder<>();
 
-        List<Pornstar> pornstars = selectQueryBuilder.getAll(Pornstar.class);
+        List<Pornstar> pornstars = pornstarRepository.getAll();
 
         Gson gson = new Gson();
         String json =  gson.toJson(pornstars);
         response.getWriter().write(json);
+    }
+
+    private Pornstar getUpdate(HttpServletRequest request, long id) {
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String nickName = request.getParameter("nickName");
+        long age = Long.parseLong(request.getParameter("age"));
+        long weight = Long.parseLong(request.getParameter("weight"));
+        long height = Long.parseLong(request.getParameter("height"));
+        ESex sex = ESex.valueOf(request.getParameter("sex"));
+
+        Pornstar updatedPornstar = pornstarRepository.get(id);
+        updatedPornstar.setFirstName(firstName);
+        updatedPornstar.setLastName(lastName);
+        updatedPornstar.setNickName(nickName);
+        updatedPornstar.setAge(age);
+        updatedPornstar.setWeight(weight);
+        updatedPornstar.setHeight(height);
+        updatedPornstar.setSex(sex);
+
+        return updatedPornstar;
     }
 
     private void populateDb(EntityManager em) {
