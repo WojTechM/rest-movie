@@ -3,6 +3,7 @@ package com.codecool.krk.servlets;
 import com.codecool.krk.enums.ECategory;
 import com.codecool.krk.enums.ESex;
 import com.codecool.krk.helpers.EntityManagerSingleton;
+import com.codecool.krk.helpers.Repository;
 import com.codecool.krk.helpers.URIparser;
 import com.codecool.krk.model.Movie;
 import com.codecool.krk.model.Pornstar;
@@ -20,6 +21,8 @@ import java.util.List;
 
 public class MovieServlet extends HttpServlet {
 
+    private Repository<Movie> movieRepository = new Repository<>(Movie.class);
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         populateDb();
@@ -34,14 +37,13 @@ public class MovieServlet extends HttpServlet {
     }
 
     private void sendSingleJson(HttpServletResponse response, long id) throws IOException {
-        EntityManager em = EntityManagerSingleton.getInstance();
-        response.getWriter().write(em.find(Movie.class, id).toJson());
+        String movieJson = movieRepository.get(id).toJson();
+        response.getWriter().write(movieJson);
     }
 
     private void sendAll(HttpServletResponse response) throws IOException{
-        EntityManager em = EntityManagerSingleton.getInstance();
-        Query query = em.createQuery("SELECT m FROM Movie m");
-        List<Movie> movies = query.getResultList();
+        List<Movie> movies = movieRepository.getAll();
+
         Gson gson = new Gson();
         String json =  gson.toJson(movies);
         response.getWriter().write(json);
@@ -52,20 +54,20 @@ public class MovieServlet extends HttpServlet {
 
         if (uriHasIdentifier) {
             long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
-            updateMovie(request, id);
+            Movie movie = updateMovie(request, id);
+            movieRepository.persistEntity(movie);
         }
     }
 
-    private void updateMovie(HttpServletRequest request, long id) {
-        EntityManager em = EntityManagerSingleton.getInstance();
-        Movie movie = em.find(Movie.class, id);
+    private Movie updateMovie(HttpServletRequest request, long id) {
+        Movie movie = movieRepository.get(id);
 
         movie.setTitle(getTitleFromRequest(request));
         movie.setDuration(getDurationFromRequest(request));
         movie.setCategories(getCategoriesFromRequest(request));
         movie.setPornstars(getPornstarsFromRequest(request));
 
-        persistMovie(movie);
+        return movie;
     }
 
     private String getTitleFromRequest(HttpServletRequest request) {
@@ -93,14 +95,6 @@ public class MovieServlet extends HttpServlet {
             pornstars.add(gson.fromJson(s, Pornstar.class));
         }
         return pornstars;
-    }
-
-    private void persistMovie(Movie movie) {
-        EntityManager em = EntityManagerSingleton.getInstance();
-        EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        em.persist(movie);
-        transaction.commit();
     }
 
     private void populateDb() {
