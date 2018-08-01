@@ -3,6 +3,7 @@ package com.codecool.krk.model;
 import com.google.gson.Gson;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,13 +22,16 @@ public class User {
     private List<View> views;
 
     @Transient
-    private Map<Movie, Long> ratings = new HashMap<>();
+    private Map<Long, Long> ratings = new HashMap<>();
 
-    public User() {}
+    public User() {
+        this.views = new ArrayList<>();
+    }
 
     public User(String login, String password) {
         this.login = login;
         this.password = password;
+        this.views = new ArrayList<>();
         this.setRatings();
     }
 
