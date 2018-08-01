@@ -67,6 +67,17 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            User user = userRepository.get(id);
+            userRepository.delete(user);
+        }
+    }
+
     private void sendSingleJson(HttpServletResponse response, EntityManager em, long id) throws IOException {
         String userJson = userRepository.get(id).toJson();
         response.getWriter().write(userJson);
