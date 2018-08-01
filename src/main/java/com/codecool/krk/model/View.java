@@ -1,31 +1,33 @@
 package com.codecool.krk.model;
 
+import com.google.gson.Gson;
+
+import javax.persistence.*;
+
+@Entity
 public class View {
 
-    private long userId;
-    private long movieId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private Movie movie;
     private long rating;
 
-    public View(long userId, long movieId, long rating) {
-        this.userId = userId;
-        this.movieId = movieId;
+    public View() {}
+
+    public View(Movie movie, long rating) {
+        this.movie = movie;
         this.rating = rating;
     }
 
-    public long getUserId() {
-        return userId;
+    public Movie getMovie() {
+        return this.movie;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public long getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(long movieId) {
-        this.movieId = movieId;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
     public long getRating() {
@@ -34,5 +36,10 @@ public class View {
 
     public void setRating(long rating) {
         this.rating = rating;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }
