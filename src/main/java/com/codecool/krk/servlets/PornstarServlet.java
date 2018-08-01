@@ -53,6 +53,17 @@ public class PornstarServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            Pornstar pornstar = pornstarRepository.get(id);
+            pornstarRepository.delete(pornstar);
+        }
+    }
+
     private void sendSingleJson(HttpServletResponse response, EntityManager em, long id) throws IOException {
         String pornstarJson = pornstarRepository.get(id).toJson();
         response.getWriter().write(pornstarJson);
