@@ -24,7 +24,7 @@ public class UserServlet extends HttpServlet {
         List<Pornstar> pornstarList = new ArrayList<>();
         Pornstar pornstar = new Pornstar("Sasha", "Grey", "Sasha", 29, 50, 160, ESex.FEMALE);
         pornstarList.add(pornstar);
-        Movie movie = new Movie("Pirates II: Stagnetti's Revenge (2008)", 138, pornstarList, new ArrayList<ECategory>());
+        Movie movie = new Movie("Pirates II: Stagnetti's Revenge (2008)", 138, pornstarList, new ArrayList<ECategory>(), "https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg");
         List<View> views = new ArrayList<>();
         View view = new View(movie, 10);
         views.add(view);

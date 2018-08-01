@@ -75,7 +75,7 @@ public class MovieServlet extends HttpServlet {
         List<ECategory> categories = getCategoriesFromRequest(request);
         List<Pornstar> pornstars = getPornstarsFromRequest(request);
 
-        Movie movie = new Movie(title, duration, pornstars, categories);
+        Movie movie = new Movie(title, duration, pornstars, categories, "https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg");
 
         movieRepository.persistEntity(movie);
     }
@@ -126,7 +126,7 @@ public class MovieServlet extends HttpServlet {
         List<ECategory> categories = new ArrayList<>();
         categories.add(ECategory.BBC);
         categories.add(ECategory.TEEN);
-        Movie movie = new Movie("Pirates II: Stagnetti's Revenge (2008)", 138, stars, categories);
+        Movie movie = new Movie("Pirates II: Stagnetti's Revenge (2008)", 138, stars, categories, "https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg");
 
         stars.add(star);
         transaction.begin();
