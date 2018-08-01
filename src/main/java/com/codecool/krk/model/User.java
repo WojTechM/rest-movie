@@ -70,6 +70,10 @@ public class User {
         this.views = views;
     }
 
+    public void addViews(List<View> views) {
+        this.views.addAll(views);
+    }
+
     public long getRating(Movie movie) {
         return this.ratings.get(movie.getId());
     }
