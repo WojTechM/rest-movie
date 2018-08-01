@@ -40,6 +40,19 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = new User();
+        List<View> views = getViews(request);
+        setData(request, user, views);
+        Repository<View> viewRepository = new Repository<>(View.class);
+
+        for(View view : views) {
+            viewRepository.add(view);
+        }
+        userRepository.add(user);
+    }
+
     private void sendSingleJson(HttpServletResponse response, EntityManager em, long id) throws IOException {
         String userJson = userRepository.get(id).toJson();
         response.getWriter().write(userJson);
@@ -52,6 +65,28 @@ public class UserServlet extends HttpServlet {
         Gson gson = new Gson();
         String json =  gson.toJson(users);
         response.getWriter().write(json);
+    }
+
+    private List<View> getViews(HttpServletRequest request) {String[] viewsJson = request.getParameterValues("views");
+        List<View> views = new ArrayList<>();
+        Gson gson = new Gson();
+
+        for(String view: viewsJson) {
+            views.add(gson.fromJson(view, View.class));
+        }
+
+        return views;
+    }
+
+    private User setData(HttpServletRequest request, User user, List<View> views) {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+
+        user.setLogin(login);
+        user.setPassword(password);
+        user.addViews(views);
+
+        return user;
     }
 
     private void populateDb(EntityManager em) {
