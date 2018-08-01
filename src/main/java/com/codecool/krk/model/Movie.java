@@ -27,11 +27,12 @@ public class Movie {
 
     public Movie() {}
 
-    public Movie(String title, float duration, List<Pornstar> pornstars, List<ECategory> categories) {
+    public Movie(String title, float duration, List<Pornstar> pornstars, List<ECategory> categories, String imgUrl) {
         this.title = title;
         this.duration = duration;
         this.pornstars = pornstars;
         this.categories = categories;
+        this.imgUrl = imgUrl;
     }
 
     public long getId() {
