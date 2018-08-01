@@ -64,6 +64,7 @@ public class PornstarServlet extends HttpServlet {
         long age = Long.parseLong(request.getParameter("age"));
         long weight = Long.parseLong(request.getParameter("weight"));
         long height = Long.parseLong(request.getParameter("height"));
+        ESex sex = ESex.valueOf(request.getParameter("sex"));
 
         Pornstar updatedPornstar = pornstarRepository.get(id);
         updatedPornstar.setFirstName(firstName);
@@ -72,6 +73,7 @@ public class PornstarServlet extends HttpServlet {
         updatedPornstar.setAge(age);
         updatedPornstar.setWeight(weight);
         updatedPornstar.setHeight(height);
+        updatedPornstar.setSex(sex);
 
         return updatedPornstar;
     }
