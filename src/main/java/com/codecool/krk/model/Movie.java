@@ -10,6 +10,7 @@ public class Movie {
     private List<Pornstar> pornstars;
     private List<ECategory> categories;
     private float duration;
+    private String imgUrl;
 
 
     public Movie(List<Pornstar> pornstars, List<ECategory> categories, float duration) {
