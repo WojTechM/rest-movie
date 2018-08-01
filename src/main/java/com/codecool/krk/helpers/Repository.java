@@ -1,7 +1,5 @@
 package com.codecool.krk.helpers;
 
-import com.codecool.krk.helpers.EntityManagerSingleton;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
@@ -26,7 +24,10 @@ public class Repository <E> {
     }
 
     public void delete(E entity) {
-
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+        em.remove(entity);
+        transaction.commit();
     }
 
     public E get(long id) {
