@@ -22,6 +22,33 @@
         <servlet-class>com.codecool.krk.servlets.ViewServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>IndexServlet</servlet-name>
+        <servlet-class>com.codecool.krk.servlets.IndexServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TextServlet</servlet-name>
+        <servlet-class>com.codecool.krk.servlets.TextFileServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TextServlet</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TextServlet</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TextServlet</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>IndexServlet</servlet-name>
+        <url-pattern>/index</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>MovieServlet</servlet-name>
         <url-pattern>/movie/*</url-pattern>
