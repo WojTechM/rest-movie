@@ -17,6 +17,10 @@
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>com.codecool.krk.servlets.UserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewServlet</servlet-name>
+        <servlet-class>com.codecool.krk.servlets.ViewServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>MovieServlet</servlet-name>
@@ -41,5 +45,13 @@
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/user/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewServlet</servlet-name>
+        <url-pattern>/view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewServlet</servlet-name>
+        <url-pattern>/view/*</url-pattern>
     </servlet-mapping>
 </web-app>
