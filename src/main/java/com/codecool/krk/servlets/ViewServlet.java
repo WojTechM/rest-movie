@@ -2,7 +2,7 @@ package com.codecool.krk.servlets;
 
 import com.codecool.krk.enums.ECategory;
 import com.codecool.krk.enums.ESex;
-import com.codecool.krk.helpers.Repository;
+import com.codecool.krk.repositories.Repository;
 import com.codecool.krk.helpers.URIparser;
 import com.codecool.krk.model.Movie;
 import com.codecool.krk.model.Pornstar;
@@ -25,6 +25,7 @@ public class ViewServlet extends HttpServlet {
     private Repository<View> viewRepository = new Repository<>(View.class);
     private boolean databasePopulated = populateDb();
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
@@ -34,6 +35,17 @@ public class ViewServlet extends HttpServlet {
             sendSingleJson(response, id);
         } else {
             sendAll(response);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            View view = viewRepository.get(id);
+            viewRepository.delete(view);
         }
     }
 
@@ -50,23 +62,14 @@ public class ViewServlet extends HttpServlet {
         response.getWriter().write(json);
     }
 
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
-        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
-
-        if (uriHasIdentifier) {
-            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
-            View view = viewRepository.get(id);
-            viewRepository.delete(view);
-        }
-    }
-
     private boolean populateDb() {
         List<Pornstar> pornstarList = new ArrayList<>();
         Pornstar pornstar = new Pornstar("Sasha", "Grey", "Sasha", 29, 50, 160, ESex.FEMALE);
         pornstarList.add(pornstar);
-        Movie movie = new Movie("Pirates II: Stagnetti's Revenge (2008)", 138, pornstarList, new ArrayList<ECategory>());
+        Repository<Movie> movieRepository = new Repository<>(Movie.class);
+        Movie movie = movieRepository.get(1);
         List<View> views = new ArrayList<>();
-        View view = new View(movie, 10);
+        View view = new View(movie.getId(), 10);
         views.add(view);
         User user = new User("login", "password", views);
 
