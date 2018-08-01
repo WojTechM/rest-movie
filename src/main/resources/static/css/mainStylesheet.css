@@ -1,0 +1,73 @@
+html {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+body {
+    background-color: black;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    color: orange;
+    font-family: "Arial", "Helvetica", sans-sarif!important;
+    width: 80%;
+}
+
+#header {
+    background-color: black;
+    color: orange;
+    border: solid 2px;
+    border-color: orange;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+}
+
+#mainPage {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: solid 2px grey;
+    width: 80%;
+    height: 60vh;
+    padding: 5%;
+}
+
+#login {
+    margin-bottom: 5%;
+}
+
+#content {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#recommendations {
+    width: 40%;
+}
+
+#browser {
+    width: 40%;
+}
+
+movie {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    margin: 3%;
+}
+
+data {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid orange;
+}
