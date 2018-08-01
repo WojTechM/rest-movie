@@ -67,12 +67,12 @@ public class User {
     }
 
     public long getRating(Movie movie) {
-        return this.ratings.get(movie);
+        return this.ratings.get(movie.getId());
     }
 
     private void setRatings() {
         for (View view : this.views) {
-            this.ratings.put(view.getMovie(), view.getRating());
+            this.ratings.put(view.getMovieId(), view.getRating());
         }
     }
 
