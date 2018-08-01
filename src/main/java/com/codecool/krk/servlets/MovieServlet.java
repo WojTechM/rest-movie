@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,6 +67,27 @@ public class MovieServlet extends HttpServlet {
         movie.setPornstars(getPornstarsFromRequest(request));
 
         return movie;
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        String title = getTitleFromRequest(request);
+        float duration = getDurationFromRequest(request);
+        List<ECategory> categories = getCategoriesFromRequest(request);
+        List<Pornstar> pornstars = getPornstarsFromRequest(request);
+
+        Movie movie = new Movie(title, duration, pornstars, categories);
+
+        movieRepository.persistEntity(movie);
+    }
+
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
+
+        if (uriHasIdentifier) {
+            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
+            Movie movie = movieRepository.get(id);
+            movieRepository.delete(movie);
+        }
     }
 
     private String getTitleFromRequest(HttpServletRequest request) {
