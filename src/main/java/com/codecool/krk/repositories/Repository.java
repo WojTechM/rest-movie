@@ -4,6 +4,7 @@ import com.codecool.krk.helpers.EntityManagerSingleton;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -34,9 +35,13 @@ public class Repository <E> {
 
     public void delete(E entity) {
         EntityTransaction transaction = em.getTransaction();
-        transaction.begin();
-        em.remove(entity);
-        transaction.commit();
+        try {
+            transaction.begin();
+            em.remove(entity);
+            transaction.commit();
+        } catch (RollbackException e) {
+            transaction.rollback();
+        }
     }
 
     public E get(long id) {
