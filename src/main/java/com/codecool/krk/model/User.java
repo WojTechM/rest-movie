@@ -17,8 +17,7 @@ public class User {
     private String login;
     private String password;
 
-    @ElementCollection
-    @OneToMany
+    @ManyToMany
     private List<View> views;
 
     @Transient
