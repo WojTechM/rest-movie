@@ -22,7 +22,7 @@ public class DummyRecommendation implements Recommendation {
 
         for(Movie movie : moviesDatabase) {
             double compatibility = calculateCompatibilityPercentage(movie);
-            if (compatibility >= 40 && !(user.sawMovie(movie))) {
+            if (compatibility >= 50 && !(user.sawMovie(movie))) {
                 recommendations.add(movie.toJson());
             }
         }
