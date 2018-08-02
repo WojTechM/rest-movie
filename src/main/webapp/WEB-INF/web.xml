@@ -30,6 +30,10 @@
         <servlet-name>TextServlet</servlet-name>
         <servlet-class>com.codecool.krk.servlets.TextFileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RecommendationServlet</servlet-name>
+        <servlet-class>com.codecool.krk.servlets.RecommendationServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>TextServlet</servlet-name>
@@ -80,5 +84,9 @@
     <servlet-mapping>
         <servlet-name>ViewServlet</servlet-name>
         <url-pattern>/view/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RecommendationServlet</servlet-name>
+        <url-pattern>/recommendation/*</url-pattern>
     </servlet-mapping>
 </web-app>
