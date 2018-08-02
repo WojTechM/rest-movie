@@ -54,8 +54,13 @@ public class PornstarServlet extends HttpServlet {
     }
 
     private void sendSingleJson(HttpServletResponse response, long id) throws IOException {
-        String pornstarJson = pornstarRepository.get(id).toJson();
-        response.getWriter().write(pornstarJson);
+        String json;
+        try {
+            json = pornstarRepository.get(id).toJson();
+        } catch (NullPointerException e) {
+            json = "Entity not found";
+        }
+        response.getWriter().write(json);
     }
 
     private void sendAll(HttpServletResponse response) throws IOException{

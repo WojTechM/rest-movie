@@ -59,8 +59,13 @@ public class UserServlet extends HttpServlet {
     }
 
     private void sendSingleJson(HttpServletResponse response, long id) throws IOException {
-        String userJson = userRepository.get(id).toJson();
-        response.getWriter().write(userJson);
+        String json;
+        try {
+            json = userRepository.get(id).toJson();
+        } catch (NullPointerException e) {
+            json = "Entity not found";
+        }
+        response.getWriter().write(json);
     }
 
     private void sendAll(HttpServletResponse response) throws IOException{

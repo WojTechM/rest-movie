@@ -54,8 +54,13 @@ public class ViewServlet extends HttpServlet {
     }
 
     private void sendSingleJson(HttpServletResponse response, long id) throws IOException {
-        String viewJson = viewRepository.get(id).toJson();
-        response.getWriter().write(viewJson);
+        String json;
+        try {
+            json = viewRepository.get(id).toJson();
+        } catch (NullPointerException e) {
+            json = "Entity not found";
+        }
+        response.getWriter().write(json);
     }
 
     private void sendAll(HttpServletResponse response) throws IOException{
