@@ -1,19 +1,15 @@
 package com.codecool.krk.servlets;
 
-import com.codecool.krk.enums.ESex;
-import com.codecool.krk.helpers.EntityManagerSingleton;
 import com.codecool.krk.helpers.URIparser;
 import com.codecool.krk.model.Pornstar;
 import com.codecool.krk.repositories.Repository;
 import com.google.gson.Gson;
 
-import javax.persistence.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PornstarServlet extends HttpServlet {
