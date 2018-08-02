@@ -1,6 +1,4 @@
 let userLogin;
-const IMG_WIDTH = 220;
-const IMG_HEIGHT = 160;
 
 function saveLogin() {
     let inputNodes = document.getElementById("login");
@@ -32,8 +30,6 @@ function updateRecommendations(text) {
         var img = document.createElement("img");
         img.setAttribute('src', jsonData[i].imgUrl);
         img.setAttribute('alt', '404ImgNotFound');
-        img.width = IMG_WIDTH;
-        img.height = IMG_HEIGHT;
         var title = document.createElement("span");
         title.innerHTML = jsonData[i].title;
         movie.appendChild(img);
