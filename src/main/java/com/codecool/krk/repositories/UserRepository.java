@@ -15,12 +15,26 @@ public class UserRepository extends Repository <User> {
     @Override
     public void update(User entity) {
         List<View> views = entity.getViews();
+        saveViews(views);
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
-        for(View view : views) {
-            em.persist(view);
-        }
         em.merge(entity);
         transaction.commit();
+    }
+
+    private void saveViews(List<View> views) {
+        EntityTransaction transaction = em.getTransaction();
+        for(View view : views) {
+            try {
+                transaction.begin();
+                em.persist(view);
+                transaction.commit();
+            } catch (Exception e) {
+                transaction.rollback();
+                transaction.begin();
+                em.merge(view);
+                transaction.commit();
+            }
+        }
     }
 }
