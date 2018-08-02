@@ -5,6 +5,7 @@ import com.codecool.krk.enums.ESex;
 import com.google.gson.Gson;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Pornstar {
@@ -98,5 +99,25 @@ public class Pornstar {
     public String toJson() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pornstar pornstar = (Pornstar) o;
+        return age == pornstar.age &&
+                weight == pornstar.weight &&
+                height == pornstar.height &&
+                Objects.equals(firstName, pornstar.firstName) &&
+                Objects.equals(lastName, pornstar.lastName) &&
+                Objects.equals(nickName, pornstar.nickName) &&
+                sex == pornstar.sex;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(firstName, lastName, nickName, age, weight, height, sex);
     }
 }
