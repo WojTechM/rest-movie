@@ -43,6 +43,7 @@ public class IndexServlet extends HttpServlet {
         List<User> users = new ArrayList<>();
 
         views.add(new View(1, 10));
+        views.add(new View(2, 1));
 
         views2.add(new View(3, 10));
 
@@ -89,11 +90,12 @@ public class IndexServlet extends HttpServlet {
     }
 
     private List<Movie> generateMovies(List<Pornstar> pornstarList, List<ECategory> categories) {
-        List<Movie> movies = new ArrayList<>();movies.add(new Movie("Pirates", 129, pornstarList.subList(0,2), categories.subList(0,4),"https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg"));
-        movies.add(new Movie("Pirates II: Stagnetti's Revenge (2008)", 138, pornstarList.subList(0,3), categories.subList(4,8), "https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg"));
-        movies.add(new Movie("Titanic Orgy", 129, pornstarList.subList(2,3), categories.subList(2,6),"https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg"));
-        movies.add(new Movie("A Tale of Two Titties", 129, pornstarList.subList(3,4), categories,"https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg"));
-        movies.add(new Movie("Buffy the Vampire Layer", 129, pornstarList, categories,"https://thumbs.dreamstime.com/z/girl-holding-chicken-brown-35201622.jpg"));
+        List<Movie> movies = new ArrayList<>();
+        movies.add(new Movie("Pirates", 129, pornstarList.subList(0,2), categories.subList(0,4),"https://www.costumes.com.au/media/catalog/product/cache/10/image/5e06319eda06f020e43594a9c230972d/8/0/800263/Pirates-Of-The-Caribbean---Angelica-Deluxe-Adult-Women-s-Costume--Disguise-BSDS-800263-31.jpg"));
+        movies.add(new Movie("Pirates II: Stagnetti's Revenge (2008)", 138, pornstarList.subList(0,3), categories.subList(4,8), "https://media.takealot.com/covers_tsins/31871943/31871943-1-zoom.jpeg"));
+        movies.add(new Movie("Titanic Orgy", 129, pornstarList.subList(2,3), categories.subList(2,6),"https://i.ytimg.com/vi/erAQ9LkftwA/maxresdefault.jpg"));
+        movies.add(new Movie("A Tale of Two Titties", 129, pornstarList.subList(3,4), categories,"https://i1.jbzdy.pl/contents/2017/09/0d7aae952c756c4973a30099e8d45fb4.jpg"));
+        movies.add(new Movie("Buffy the Vampire Layer", 129, pornstarList, categories,"https://a.wattpad.com/cover/82993284-352-k403726.jpg"));
 
         return movies;
     }
