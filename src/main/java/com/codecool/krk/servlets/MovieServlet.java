@@ -32,7 +32,7 @@ public class MovieServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Movie movie = loadMovieFromRequest(request);
-        for(Pornstar ps : movie.getPornstars()) {
+        for (Pornstar ps : movie.getPornstars()) {
             if (pornstarRepository.get(ps.getId()) == null) {
                 pornstarRepository.add(ps);
             } else {
@@ -43,7 +43,7 @@ public class MovieServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Movie movie = loadMovieFromRequest(request);
         movieRepository.update(movie);
     }
@@ -67,17 +67,17 @@ public class MovieServlet extends HttpServlet {
         String movieJson;
         try {
             movieJson = movieRepository.get(id).toJson();
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             movieJson = "Entity not found";
         }
         response.getWriter().write(movieJson);
     }
 
-    private void sendAll(HttpServletResponse response) throws IOException{
+    private void sendAll(HttpServletResponse response) throws IOException {
         List<Movie> movies = movieRepository.getAll();
 
         Gson gson = new Gson();
-        String json =  gson.toJson(movies);
+        String json = gson.toJson(movies);
         response.getWriter().write(json);
     }
 
