@@ -15,14 +15,16 @@ public class DummyRecommendation implements Recommendation {
     private Set<ECategory> favoriteCategory = new HashSet<>();
 
     @Override
-    public Map<String, Double> findRecommendation(User user) {
-        Map<String, Double> recommendations = new HashMap<>();
+    public List<String> findRecommendation(User user) {
+        List<String> recommendations = new ArrayList<>();
         List<Movie> moviesDatabase = getMoviesData();
         getFavorites(user);
 
         for(Movie movie : moviesDatabase) {
             double compatibility = calculateCompatibilityPercentage(movie);
-            recommendations.put(movie.getTitle(), compatibility);
+            if (compatibility >= 40 && !(user.sawMovie(movie))) {
+                recommendations.add(movie.toJson());
+            }
         }
 
         return recommendations;

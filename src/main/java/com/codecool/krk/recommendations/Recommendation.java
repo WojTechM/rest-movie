@@ -2,8 +2,8 @@ package com.codecool.krk.recommendations;
 
 import com.codecool.krk.model.User;
 
-import java.util.Map;
+import java.util.List;
 
 public interface Recommendation {
-    Map<String, Double> findRecommendation(User user);
+    List<String> findRecommendation(User user);
 }
