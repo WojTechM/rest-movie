@@ -77,6 +77,11 @@ public class User {
         return this.ratings.get(movie.getId());
     }
 
+    public Map<Long, Long> getRatings() {
+        setRatings();
+        return this.ratings;
+    }
+
     private void setRatings() {
         for (View view : this.views) {
             this.ratings.put(view.getMovieId(), view.getRating());
