@@ -88,6 +88,16 @@ public class User {
         }
     }
 
+    public boolean sawMovie(Movie movie) {
+        boolean seen = false;
+        for (View v : views) {
+            if (v.getMovieId() == movie.getId()) {
+                seen = true;
+            }
+        }
+        return seen;
+    }
+
     public String toJson() {
         Gson gson = new Gson();
         return gson.toJson(this);
