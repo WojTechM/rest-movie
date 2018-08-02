@@ -34,6 +34,11 @@
         <servlet-name>RecommendationServlet</servlet-name>
         <servlet-class>com.codecool.krk.servlets.RecommendationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HistoryServlet</servlet-name>
+        <servlet-class>com.codecool.krk.servlets.UserBrowsingHistoryServlet</servlet-class>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>TextServlet</servlet-name>
@@ -88,5 +93,9 @@
     <servlet-mapping>
         <servlet-name>RecommendationServlet</servlet-name>
         <url-pattern>/recommendation/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HistoryServlet</servlet-name>
+        <url-pattern>/history/*</url-pattern>
     </servlet-mapping>
 </web-app>
