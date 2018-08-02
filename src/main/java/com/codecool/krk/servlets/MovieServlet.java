@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class MovieServlet extends HttpServlet {
     private Repository<Movie> movieRepository = new MovieRepository();
@@ -49,14 +52,9 @@ public class MovieServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
-        boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
-
-        if (uriHasIdentifier) {
-            long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
-            Movie movie = updateMovie(request, id);
-            movieRepository.update(movie);
-        }
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        Movie movie = updateMovie(request);
+        movieRepository.update(movie);
     }
 
     @Override
@@ -83,15 +81,10 @@ public class MovieServlet extends HttpServlet {
         response.getWriter().write(json);
     }
 
-    private Movie updateMovie(HttpServletRequest request, long id) {
-        Movie movie = movieRepository.get(id);
-
-        movie.setTitle(getTitleFromRequest(request));
-        movie.setDuration(getDurationFromRequest(request));
-        movie.setCategories(getCategoriesFromRequest(request));
-        movie.setPornstars(getPornstarsFromRequest(request));
-
-        return movie;
+    private Movie updateMovie(HttpServletRequest request) throws IOException {
+        StringBuilder jsonBuilder = new StringBuilder();
+        request.getReader().lines().forEach(jsonLine -> jsonBuilder.append(jsonLine));
+        return new Gson().fromJson(jsonBuilder.toString(), Movie.class);
     }
 
     private String getTitleFromRequest(HttpServletRequest request) {
@@ -105,8 +98,11 @@ public class MovieServlet extends HttpServlet {
     private List<ECategory> getCategoriesFromRequest(HttpServletRequest request) {
         String[] categoriesAsStrings = request.getParameterValues("category");
         List<ECategory> categories = new ArrayList<>();
-        for(String s : categoriesAsStrings) {
-            categories.add(ECategory.valueOf(s.toUpperCase()));
+
+        if(categoriesAsStrings != null) {
+            for(String s : categoriesAsStrings) {
+                categories.add(ECategory.valueOf(s.toUpperCase()));
+            }
         }
         return categories;
     }
@@ -115,8 +111,10 @@ public class MovieServlet extends HttpServlet {
         String[] pornstarJsons = request.getParameterValues("pornstar");
         List<Pornstar> pornstars = new ArrayList<>();
         Gson gson = new Gson();
-        for(String s : pornstarJsons) {
-            pornstars.add(gson.fromJson(s, Pornstar.class));
+        if (pornstarJsons != null) {
+            for (String s : pornstarJsons) {
+                pornstars.add(gson.fromJson(s, Pornstar.class));
+            }
         }
         return pornstars;
     }
