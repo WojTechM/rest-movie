@@ -18,7 +18,7 @@ public class MovieRepository extends Repository <Movie> {
         EntityTransaction transaction = em.getTransaction();
         transaction.begin();
         for(Pornstar pornstar : pornstars) {
-            em.persist(pornstar);
+            em.merge(pornstar);
         }
         em.merge(entity);
         transaction.commit();
