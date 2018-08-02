@@ -1,29 +1,18 @@
 package com.codecool.krk.servlets;
 
-import com.codecool.krk.enums.ECategory;
-import com.codecool.krk.enums.ESex;
-import com.codecool.krk.repositories.Repository;
 import com.codecool.krk.helpers.URIparser;
-import com.codecool.krk.model.Movie;
-import com.codecool.krk.model.Pornstar;
-import com.codecool.krk.model.User;
 import com.codecool.krk.model.View;
+import com.codecool.krk.repositories.Repository;
 import com.google.gson.Gson;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewServlet extends HttpServlet {
     private Repository<View> viewRepository = new Repository<>(View.class);
-    private boolean databasePopulated = populateDb();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -39,14 +28,29 @@ public class ViewServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        View view = loadViewFromRequest(request);
+        viewRepository.add(view);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        View view = loadViewFromRequest(request);
+        viewRepository.update(view);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException{
         boolean uriHasIdentifier = URIparser.hasIdentifier(request.getRequestURI());
 
+        View view;
         if (uriHasIdentifier) {
             long id = Long.valueOf(URIparser.parseIdentifier(request.getRequestURI()));
-            View view = viewRepository.get(id);
-            viewRepository.delete(view);
+            view = viewRepository.get(id);
+        } else {
+            view = loadViewFromRequest(request);
         }
+        viewRepository.delete(view);
     }
 
     private void sendSingleJson(HttpServletResponse response, long id) throws IOException {
@@ -56,34 +60,15 @@ public class ViewServlet extends HttpServlet {
 
     private void sendAll(HttpServletResponse response) throws IOException{
         List<View> views = viewRepository.getAll();
-
         Gson gson = new Gson();
         String json =  gson.toJson(views);
         response.getWriter().write(json);
     }
 
-    private boolean populateDb() {
-        List<Pornstar> pornstarList = new ArrayList<>();
-        Pornstar pornstar = new Pornstar("Sasha", "Grey", "Sasha", 29, 50, 160, ESex.FEMALE);
-        pornstarList.add(pornstar);
-        Repository<Movie> movieRepository = new Repository<>(Movie.class);
-        Movie movie = movieRepository.get(1);
-        List<View> views = new ArrayList<>();
-        View view = new View(movie.getId(), 10);
-        views.add(view);
-        User user = new User("login", "password", views);
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("porndatabasePU");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-
-        transaction.begin();
-        em.persist(pornstar);
-        em.persist(movie);
-        em.persist(view);
-        em.persist(user);
-        transaction.commit();
-        return true;
+    private View loadViewFromRequest(HttpServletRequest request) throws IOException {
+        StringBuilder jsonBuilder = new StringBuilder();
+        request.getReader().lines().forEach(jsonLine -> jsonBuilder.append(jsonLine));
+        return new Gson().fromJson(jsonBuilder.toString(), View.class);
     }
 }
 
