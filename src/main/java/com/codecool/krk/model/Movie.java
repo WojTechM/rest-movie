@@ -16,7 +16,6 @@ public class Movie {
     private String title;
     private float duration;
 
-    @ElementCollection
     @ManyToMany
     private List<Pornstar> pornstars;
 
