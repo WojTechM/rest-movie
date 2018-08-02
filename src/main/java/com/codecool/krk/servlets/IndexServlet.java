@@ -75,7 +75,7 @@ public class IndexServlet extends HttpServlet {
             em.merge(movie);
         }
         for (View view : views) {
-            em.persist(view);q
+            em.persist(view);
         }
         for (User user : users) {
             em.persist(user);
