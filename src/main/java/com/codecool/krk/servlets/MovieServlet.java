@@ -2,6 +2,7 @@ package com.codecool.krk.servlets;
 
 import com.codecool.krk.helpers.URIparser;
 import com.codecool.krk.model.Movie;
+import com.codecool.krk.model.Pornstar;
 import com.codecool.krk.repositories.MovieRepository;
 import com.codecool.krk.repositories.Repository;
 import com.google.gson.Gson;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class MovieServlet extends HttpServlet {
     private Repository<Movie> movieRepository = new MovieRepository();
+    private Repository<Pornstar> pornstarRepository = new Repository<>(Pornstar.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -30,6 +32,13 @@ public class MovieServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Movie movie = loadMovieFromRequest(request);
+        for(Pornstar ps : movie.getPornstars()) {
+            if (pornstarRepository.get(ps.getId()) == null) {
+                pornstarRepository.add(ps);
+            } else {
+                pornstarRepository.update(ps);
+            }
+        }
         movieRepository.add(movie);
     }
 
@@ -55,7 +64,12 @@ public class MovieServlet extends HttpServlet {
     }
 
     private void sendSingleJson(HttpServletResponse response, long id) throws IOException {
-        String movieJson = movieRepository.get(id).toJson();
+        String movieJson;
+        try {
+            movieJson = movieRepository.get(id).toJson();
+        }catch (NullPointerException e) {
+            movieJson = "Entity not found";
+        }
         response.getWriter().write(movieJson);
     }
 
