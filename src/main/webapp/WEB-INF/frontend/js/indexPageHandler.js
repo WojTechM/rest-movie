@@ -13,7 +13,6 @@ function loadRecommendations() {
 
     xhttp.onreadystatechange =
     function() {
-        console.log("Load recommendations state: " + this.readyState);
         if (this.readyState == 4 && this.status == 200) {
             updateRecommendations(this.responseText);
         }
@@ -28,7 +27,6 @@ function loadHistory() {
 
     xhttp.onreadystatechange =
     function() {
-        console.log("Load history state: " + this.readyState);
         if (this.readyState == 4 && this.status == 200) {
             updateHistory(this.responseText);
         }
@@ -57,12 +55,10 @@ function updateRecommendations(text) {
 }
 
 function updateHistory(text) {
-    console.log("Update history")
     var jsonData = JSON.parse(text);
     var browsingHistory = document.getElementById("browsingHistory");
     removeCurrentHistory(browsingHistory);
 
-debugger;
     for (let i = 0; i < jsonData.length && i < 3; i++) {
         var json = JSON.parse(jsonData[i]);
         var movie = document.createElement("movie");
